@@ -15,9 +15,6 @@
 
 <body>
 
-    <!-- =========================================================================
-       1. Top Navigation Bar (Header)
-       ========================================================================= -->
     <header class="app-header">
         <div class="brand-wrapper">
             <div class="brand-icon" aria-hidden="true">⇄</div>
@@ -31,19 +28,11 @@
         </div>
     </header>
 
-    <!-- =========================================================================
-       2. Application Master Layout (Grid: Main Workspace + History Sidebar)
-       ========================================================================= -->
     <div class="app-layout">
 
-        <!-- =======================================================================
-         Main Workspace (Request Builder, Lifecycle Visualizer, Response)
-         ======================================================================= -->
         <main class="main-workspace">
 
-            <!-- -------------------------------------------------------------------
-           HTTP Request Configuration Form
-           ------------------------------------------------------------------- -->
+
             <form id="request-form" class="request-builder-card" autocomplete="off">
 
                 <!-- Primary Address Bar: Method Dropdown + URL Input + Send/Abort -->
@@ -86,9 +75,7 @@
                     </div>
                 </div>
 
-                <!-- -----------------------------------------------------------------
-             Parameters Section: Request Headers & Request Body (JSON)
-             ----------------------------------------------------------------- -->
+
                 <section class="params-section" aria-label="Request Configuration">
                     <div class="section-title-bar">
                         <span class="section-heading">Request Configuration</span>
@@ -151,9 +138,7 @@
 
             </form>
 
-            <!-- -------------------------------------------------------------------
-           Signature Feature: Promise Lifecycle Visualizer
-           ------------------------------------------------------------------- -->
+
             <section class="lifecycle-card" id="lifecycle-section" aria-label="Promise Lifecycle Visualizer">
                 <div class="lifecycle-header">
                     <div class="lifecycle-title">
@@ -175,8 +160,7 @@
                     <div class="stage-arrow active" aria-hidden="true">➔</div>
 
                     <!-- State 2: FULFILLED (Currently highlighted as demonstration) -->
-                    <div class="stage-item" id="stage-fulfilled"
-                        title="Promise resolved, response received and parsed">
+                    <div class="stage-item" id="stage-fulfilled" title="Promise resolved, response received and parsed">
                         <span class="stage-indicator"></span>
                         <span>FULFILLED</span>
                     </div>
@@ -192,9 +176,6 @@
                 </div>
             </section>
 
-            <!-- -------------------------------------------------------------------
-           Response Inspector Panel
-           ------------------------------------------------------------------- -->
             <section class="response-card" id="response-section" aria-label="Response Inspector">
                 <!-- Status & Latency Metrics Top Bar -->
                 <div class="response-metrics-bar">
@@ -254,9 +235,7 @@
 
         </main>
 
-        <!-- =======================================================================
-         3. Request History Sidebar
-         ======================================================================= -->
+
         <aside class="history-sidebar" id="history-sidebar" aria-label="Request History">
             <!-- Sidebar Header -->
             <div class="history-header">
@@ -316,10 +295,10 @@
         </aside>
 
     </div>
-<script src="/js/api.js"></script>
-<script src="/js/storage.js"></script>
-<script src="/js/ui.js"></script>
-<script src="/js/app.js"></script>
+    <script src="/js/api.js"></script>
+    <script src="/js/storage.js"></script>
+    <script src="/js/ui.js"></script>
+    <script src="/js/app.js"></script>
 </body>
 
 </html>
