@@ -10,22 +10,28 @@
     <meta property="og:title" content="cURL Lite — Visual HTTP Request Playground">
     <meta property="og:description"
         content="A lightweight, browser-native visual HTTP request playground with Promise lifecycle visualization, headers editor, and request history.">
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
     <header class="app-header">
-        <div class="brand-wrapper">
-            <div class="brand-icon" aria-hidden="true">⇄</div>
-            <h1 class="brand-title">
-                cURL Lite
-                <span class="brand-badge">HTTP Playground</span>
-            </h1>
-        </div>
-        <div class="header-meta">
-            <span class="header-doc-link">Native Fetch API &amp; Promise Lifecycle</span>
-        </div>
+        <nav class="capsule-nav">
+            <a href="landing.html" class="brand-capsule">
+                <div class="brand-icon-box" aria-hidden="true">⇄</div>
+                <span class="brand-name">cURL Lite</span>
+                <span class="brand-cross">×</span>
+                <span class="brand-tag">Playground</span>
+            </a>
+            <ul class="capsule-nav-links">
+                <li><a href="landing.html" class="capsule-nav-link">Home</a></li>
+                <li><a href="index.html" class="capsule-nav-link active">Playground</a></li>
+                <li><a href="collections.html" class="capsule-nav-link">Collections</a></li>
+            </ul>
+            <div class="nav-actions-right">
+                <a href="landing.html" class="nav-link-btn">← Back to Home</a>
+            </div>
+        </nav>
     </header>
 
     <div class="app-layout">
@@ -34,6 +40,20 @@
 
 
             <form id="request-form" class="request-builder-card" autocomplete="off">
+
+                <!-- AI Natural Language Request Builder -->
+                <div class="ai-prompt-bar">
+                    <div class="ai-input-cluster">
+                        <input type="password" id="ai-key-input" class="ai-key-input" placeholder="ASI API Key"
+                            title="ASI API Key (saved locally)">
+                        <input type="text" id="ai-prompt-input" class="ai-prompt-input"
+                            placeholder="✨ Type prompt (e.g. Fetch 5 products under $500 from dummyjson)...">
+                    </div>
+                    <button type="button" id="btn-ai-generate" class="btn btn-ai"
+                        title="Generate HTTP Request using AI">
+                        ✨ Generate
+                    </button>
+                </div>
 
                 <!-- Primary Address Bar: Method Dropdown + URL Input + Send/Abort -->
                 <div class="url-bar-container">
@@ -295,10 +315,10 @@
         </aside>
 
     </div>
-    <script src="/js/api.js"></script>
-    <script src="/js/storage.js"></script>
-    <script src="/js/ui.js"></script>
-    <script src="/js/app.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/app.js"></script>
 </body>
 
 </html>
