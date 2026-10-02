@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cURL Lite — API Collections & Workspaces</title>
+    <meta name="description"
+        content="Manage, store in IndexedDB, and generate API Collections with AI — cURL Lite Visual HTTP Playground.">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <header class="app-header">
+        <nav class="capsule-nav">
+            <a href="landing.html" class="brand-capsule">
+                <div class="brand-icon-box" aria-hidden="true">⇄</div>
+                <span class="brand-name">cURL Lite</span>
+                <span class="brand-cross">×</span>
+                <span class="brand-tag">Collections</span>
+            </a>
+            <ul class="capsule-nav-links">
+                <li><a href="landing.html" class="capsule-nav-link">Home</a></li>
+                <li><a href="index.html" class="capsule-nav-link">Playground</a></li>
+                <li><a href="collections.html" class="capsule-nav-link active">Collections</a></li>
+            </ul>
+            <div class="nav-actions-right">
+                <a href="index.html" class="nav-link-btn">⚡ Launch Playground</a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="app-layout single-column-layout">
+
+        <main class="main-workspace">
+
+            <!-- Title & Overview Header Card -->
+            <section class="request-builder-card">
+                <div class="collections-header-bar">
+                    <div>
+                        <h1 class="collections-main-title">📁 API Collections & IndexedDB Workspace</h1>
+                        <p class="collections-subtitle">
+                            Organize endpoint suites, persist structured data offline via IndexedDB, or auto-generate collections with AI.
+                        </p>
+                    </div>
+                    <button type="button" id="btn-create-collection" class="btn btn-send" style="background-color: var(--accent-primary);">
+                        + Create Collection
+                    </button>
+                </div>
+
+                <!-- AI Collection Suite Generator Bar -->
+                <div class="ai-prompt-bar" style="margin-top: 1.25rem;">
+                    <div class="ai-input-cluster">
+                        <input type="password" id="ai-key-input" class="ai-key-input" placeholder="ASI API Key"
+                            title="ASI API Key (saved locally)">
+                        <input type="text" id="ai-collection-prompt" class="ai-prompt-input"
+                            placeholder="✨ Type prompt (e.g. Generate 4 E-Commerce API endpoints for Products, Cart, Checkout, Auth)...">
+                    </div>
+                    <button type="button" id="btn-ai-generate-collection" class="btn btn-ai" title="Generate API Collection using AI">
+                        ✨ Generate Collection
+                    </button>
+                </div>
+            </section>
+
+            <!-- Collections Display Section -->
+            <section class="request-builder-card" style="margin-top: 1.5rem;">
+                <div class="section-title-bar">
+                    <span class="section-heading">Saved Collections (IndexedDB)</span>
+                    <span id="collections-badge-count" class="history-badge">0 Collections</span>
+                </div>
+
+                <div id="collections-container" class="collections-grid">
+                    <!-- Dynamic collection cards will be rendered here by JS -->
+                    <div class="empty-state-box">
+                        <span style="font-size: 2rem;">📂</span>
+                        <p>No collections saved in IndexedDB yet.</p>
+                        <small>Use the AI generator above or click "+ Create Collection" to create your first endpoint suite.</small>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+    </div>
+
+    <!-- Create Custom Collection Modal -->
+    <div id="collection-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Create New Collection</h3>
+                <button type="button" id="btn-close-modal" class="btn-remove-header">✕</button>
+            </div>
+            <form id="create-collection-form">
+                <div class="param-block" style="margin-bottom: 1rem;">
+                    <label class="param-block-label" for="col-name-input">Collection Name</label>
+                    <input type="text" id="col-name-input" class="url-input" placeholder="e.g. E-Commerce API Suite" required>
+                </div>
+                <div class="param-block" style="margin-bottom: 1rem;">
+                    <label class="param-block-label" for="col-desc-input">Description</label>
+                    <input type="text" id="col-desc-input" class="url-input" placeholder="e.g. Endpoints for products, cart, and orders">
+                </div>
+                <div style="display: flex; justify-content: flex-end; gap: 8px;">
+                    <button type="button" id="btn-cancel-modal" class="btn btn-abort">Cancel</button>
+                    <button type="submit" class="btn btn-send">Save to IndexedDB</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/db.js"></script>
+    <script src="js/collections.js"></script>
+</body>
+
+</html>
