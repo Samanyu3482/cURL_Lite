@@ -323,7 +323,7 @@ Enter your [ASI Cloud](https://inference.asicloud.cudos.org) API key in the AI P
 **Project:** cURL Lite — Visual HTTP Request Playground  
 **Repository:** [github.com/Samanyu3482/cURL_Lite](https://github.com/Samanyu3482/cURL_Lite)
 
-Built as part of the **SIGMA Web Dev SIG Major Projects** programme.
+Built as part of the **UCA PROJECTS WEB DEVELOPMENT - PROJECT - 1** programme.
 
 - AI inference powered by [ASI Cloud (Cudos)](https://inference.asicloud.cudos.org) using the `asi1-mini` model
 - No third-party UI frameworks or component libraries were used
