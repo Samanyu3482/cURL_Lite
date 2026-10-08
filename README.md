@@ -12,12 +12,12 @@
 
 <table>
   <tr>
-    <td><img src="screenshots/1.png" alt="Landing Page" width="100%"/></td>
-    <td><img src="screenshots/2.png" alt="Playground — Request Builder" width="100%"/></td>
+    <td><img src="photos/landing.png" alt="Landing Page" width="100%"/></td>
+    <td><img src="photos/playground.png" alt="Playground — Request Builder" width="100%"/></td>
   </tr>
   <tr>
-    <td><img src="screenshots/3.png" alt="Playground — Response Inspector" width="100%"/></td>
-    <td><img src="screenshots/4.png" alt="Collections Page" width="100%"/></td>
+    <td><img src="photos/response.png" alt="Playground — Response Inspector" width="100%"/></td>
+    <td><img src="photos/collections.png" alt="Collections Page" width="100%"/></td>
   </tr>
 </table>
 
