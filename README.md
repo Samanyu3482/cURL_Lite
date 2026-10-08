@@ -1,244 +1,330 @@
-#  cURL Lite — Visual HTTP Request Playground
+# cURL Lite — Visual HTTP Request Playground
 
-> **Project Proposal & Specification Guide**  
-> A lightweight, web-based API client and visual HTTP request playground built with Vanilla HTML5, CSS3, JavaScript (ES6+), and native Browser APIs.
-
----
-
-##  Project Overview
-
-**cURL Lite** is an interactive, browser-native HTTP request playground designed to simplify REST API testing and visually demonstrate key web concepts. Inspired by API testing tools like Postman and cURL, cURL Lite enables developers and learners to construct, send, inspect, abort, and persist HTTP requests directly within the browser—without relying on heavy third-party dependencies or external frameworks.
-
-The application serves both as a functional developer utility and an educational visualizer, rendering the underlying **Promise Lifecycle** (`PENDING` → `FULFILLED` / `REJECTED`), network timing metrics, header management, and local request history in real time.
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)
+![No Build Tools](https://img.shields.io/badge/No%20Build%20Tools-Required-brightgreen?style=flat)
+![Browser Native](https://img.shields.io/badge/Browser-Native-blue?style=flat)
 
 ---
 
-##  Goals & Objectives
+## Screenshots
 
-### 1. Primary Objectives
-* **Interactive API Testing**: Provide an intuitive visual interface to test RESTful APIs (`GET`, `POST`, `PUT`, `DELETE`).
-* **Visualizing Asynchronous JS**: Demystify JavaScript Promises and the `fetch` API lifecycle through real-time state visualization.
-* **Zero-Dependency Architecture**: Build a high-performance web app strictly using native modern Web APIs (`Fetch`, `AbortController`, `AbortSignal.timeout`, `LocalStorage`, `DOM API`).
-* **Clean Software Engineering**: Enforce modular architecture by segregating API logic, UI updates, and data storage into dedicated modules.
+<table>
+  <tr>
+    <td><img src="screenshots/1.png" alt="Landing Page" width="100%"/></td>
+    <td><img src="screenshots/2.png" alt="Playground — Request Builder" width="100%"/></td>
+  </tr>
+  <tr>
+    <td><img src="screenshots/3.png" alt="Playground — Response Inspector" width="100%"/></td>
+    <td><img src="screenshots/4.png" alt="Collections Page" width="100%"/></td>
+  </tr>
+</table>
 
-### 2. Learning & Educational Outcomes
-* Master asynchronous JavaScript (`async/await`, `Promises`, `.then()`, `.catch()`).
-* Understand HTTP request/response lifecycles, headers, status codes (`200 OK`, `404 Not Found`, `500 Internal Server Error`), and request bodies (`JSON.stringify()`, `response.json()`).
-* Implement network resiliency features like manual request cancellation (`AbortController`) and automated timeout handling (`AbortSignal.timeout()`).
-* Implement browser persistence utilizing `localStorage` and JSON serializations.
 
----
-
-##  Specifications
-
-### 1. Functional Features Hierarchy
-
-####  Level 1 — Essential Features
-* **HTTP Method Selector**: Dropdown to choose between `GET`, `POST`, `PUT`, and `DELETE`.
-* **URL Input Field**: Validated input box for target API endpoints (e.g., `https://dummyjson.com/products/1`).
-* **Send Request Button**: Triggers the asynchronous request execution.
-* **Response Inspector**: Displays status codes, response headers, and formatted JSON output.
-* **Error Handling**: Graceful error UI for invalid URLs, network drops, or HTTP error status codes (`response.ok` check).
-* **Loading Indicators**: Visual spinner/overlay during active network requests.
-* **Readable JSON Formatting**: Pretty-prints raw JSON strings with syntax highlighting or clear indentation (`JSON.stringify(data, null, 2)`).
-
-####  Level 2 — Important Features
-* **Dynamic Headers Editor**: Add, edit, or remove custom HTTP Request Headers (key-value pairs such as `Content-Type: application/json` or `Authorization: Bearer <token>`).
-* **Request Body Editor**: Multi-line JSON body editor for `POST` and `PUT` payloads.
-* **Request History Panel**: Chronological list of previously executed requests (Method, URL, Timestamp).
-* **LocalStorage Persistence**: Stores request history locally so data persists across browser reloads.
-* **History Restoration & Management**: Clicking a past request restores its method, URL, headers, and body into the form. Includes a **Clear History** button.
-
-####  Level 3 — Signature Features
-* **Promise Lifecycle Visualizer**: Visual status badge depicting real-time promise states:
-  * `PENDING`: Request initiated, awaiting server response.
-  * `FULFILLED`: Request succeeded with data parsed.
-  * `REJECTED`: Request failed due to network error, timeout, or abort.
-* **Abort Request**: Immediate cancellation of active HTTP requests using `AbortController.abort()`.
-* **Configurable Timeout**: Automated cancellation using `AbortSignal.timeout(ms)` to stop hanging requests.
-* **Response Timing Metrics**: Calculates and displays request latency (round-trip time in milliseconds).
-
-####  Stretch Goals
-* **Code Generator**: Generates copyable, native JavaScript `fetch()` code snippets based on current form inputs.
-* **Request Collections**: Group saved requests into categories (e.g., *Authentication*, *Products*, *Users*).
-* **Response Analytics**: Detailed response payload stats (Status, Round-trip Time, Payload Size in KB, Content-Type).
 
 ---
 
-### 2. Architecture & Directory Structure
+## Project Proposal
 
-cURL Lite follows a clean separation of concerns:
+### Title
+**cURL Lite — Visual HTTP Request Playground**
+
+### Description
+cURL Lite is a lightweight, browser-native HTTP API testing tool built entirely with vanilla HTML, CSS, and JavaScript. It allows developers to compose, send, and inspect real HTTP requests directly in the browser — without any backend, build pipeline, or desktop application. A unique Promise Lifecycle Visualizer shows the live state transitions (PENDING → FULFILLED / REJECTED) of each asynchronous `fetch()` call, making it as much a learning tool as a productivity tool.
+
+### Goals
+- Provide a zero-setup alternative to API clients like Postman for quick HTTP testing.
+- Visually demonstrate JavaScript Promise lifecycle states in real time.
+- Persist request history, form drafts, and user preferences using browser storage APIs.
+- Enable AI-assisted request generation and collection building via the ASI Cloud LLM API.
+- Organize reusable endpoint suites into named Collections backed by IndexedDB.
+
+### Specifications
+
+**Tech Stack:** Vanilla HTML5, CSS3 (Custom Properties, Flexbox, CSS Grid), Vanilla JavaScript (ES6+, async/await, Fetch API, AbortController, IndexedDB, localStorage, sessionStorage, Cookies)
+
+**Core Features:**
+- HTTP request builder (GET, POST, PUT, DELETE)
+- Dynamic headers editor (add/remove key-value rows)
+- JSON request body editor
+- Configurable request timeout via `AbortSignal`
+- Promise Lifecycle Visualizer (PENDING / FULFILLED / REJECTED)
+- Response inspector (status badge, latency, response headers, formatted JSON body)
+- Persistent request history (up to 20 entries, stored in `localStorage`)
+- One-click history restore — loads any past request back into the form
+- Session-draft auto-save (`sessionStorage`) — survives accidental tab refreshes
+- Timeout preference persistence (browser Cookie, 30-day expiry)
+- AI-assisted request generation (ASI Cloud `asi1-mini` model)
+- API Collections manager with full CRUD via IndexedDB
+- AI-assisted collection suite generation
+- Deep-link support — Playground loads pre-filled via URL query params (`?url=&method=`)
+
+**Pages:** Landing (`landing.html`), Playground (`index.html`), Collections (`collections.html`)
+
+**Design Approach:** Clean, minimal light theme using a curated color palette defined via CSS Custom Properties. System font stack with monospace (`JetBrains Mono / Fira Code`) for code surfaces. Glassmorphism navbar (`backdrop-filter: blur`). Animated hero with cycling headline text. CSS Grid two-column layout on desktop, single-column on tablet/mobile.
+
+---
+
+## Overview
+
+cURL Lite removes friction from browser-based API testing. The Playground page provides a Postman-like interface — method selector, URL bar, headers editor, body textarea, timeout control — that uses the native browser Fetch API to fire real HTTP requests. Every request is logged to `localStorage`; clicking any history entry restores the full configuration back into the form. A dedicated Collections page stores named groups of API endpoints in IndexedDB, and both pages integrate an optional AI bar that talks to the ASI Cloud inference API to auto-generate requests or whole endpoint suites from natural-language prompts.
+
+---
+
+## Features
+
+### HTTP Request Execution
+- Select HTTP method: **GET, POST, PUT, DELETE**
+- Enter any target URL
+- Configure a request timeout (ms) backed by `AbortController` / `AbortSignal`
+- Abort an in-flight request manually via the **Abort** button
+- Body is sent only for POST / PUT (GET and DELETE are body-stripped automatically)
+
+### Dynamic Headers Editor
+- Pre-populated with `Content-Type: application/json` and `Accept: application/json` rows on load
+- Add unlimited key-value header rows dynamically via DOM manipulation (`createElement`)
+- Remove individual rows with the ✕ button (event delegation on the container)
+- Headers serialized into a plain object and passed directly to `fetch()`
+
+### Promise Lifecycle Visualizer
+- Three-state pipeline indicator: **PENDING** (amber pulse animation) → **FULFILLED** (green) / **REJECTED** (red)
+- Updates in real time as the async `fetch()` call progresses
+- Latency displayed in the visualizer header after each request
+
+### Response Inspector
+- HTTP status code + status text badge (green for 2xx, red for errors/abort)
+- Response time in milliseconds (measured with `performance.now()`)
+- Response headers rendered as key-value pairs
+- Formatted JSON body (`JSON.stringify` with 2-space indent) in a scrollable `<pre><code>` block
+
+### Request History (Read, Clear)
+- Up to 20 entries persisted in `localStorage` under key `curl-lite-history`
+- Each entry stores: method, URL, status, duration, timestamp, body, headers
+- Sidebar lists entries as clickable cards; clicking restores the full request into the form
+- **Clear History** button wipes the `localStorage` entry and re-renders the empty state
+
+### Session Draft Auto-Save
+- Form state is serialized and written to `sessionStorage` on every `input` / `change` event
+- On page load, the draft is restored automatically (overridden if URL query params are present)
+- Draft is cleared after a successful request submission
+
+### Cookie-Based Preferences
+- The **Timeout** field value is written to a browser cookie (`curl_lite_timeout`, 30-day expiry) on change
+- Loaded back and applied on page initialization
+
+### Collections CRUD (IndexedDB)
+- **Create:** Modal form (`+ Create Collection`) saves a named collection with optional description to IndexedDB
+- **Read:** All collections loaded from IndexedDB on page mount and rendered as cards
+- **Delete:** ✕ button on each card removes the record from IndexedDB and re-renders the grid
+- Each collection card lists its endpoint items with method tags and **▶ Run** links that deep-link to the Playground
+
+### AI Assistant
+- **Playground:** Natural-language prompt → structured HTTP request config (method, URL, headers, body) auto-populated into the form
+- **Collections:** Natural-language prompt → full collection object (name + array of request configs) saved directly to IndexedDB
+- Powered by **ASI Cloud inference API** (`asi1-mini` model, OpenAI-compatible `/v1/chat/completions`)
+- API key stored in `localStorage` (`curl-lite-ai-key`), persists across sessions
+- Animated glowing purple UI state during generation (`ai-generating` CSS class with `@keyframes`)
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Markup | HTML5 — semantic elements (`header`, `main`, `aside`, `section`, `article`, `nav`, `footer`) |
+| Styling | Vanilla CSS3 — Custom Properties, Flexbox, CSS Grid, `@keyframes`, `backdrop-filter` |
+| Logic | Vanilla JavaScript (ES6+) — `async/await`, Fetch API, `AbortController`, `performance.now()` |
+| Storage (History) | `localStorage` |
+| Storage (Draft) | `sessionStorage` |
+| Storage (Preferences) | Browser Cookies |
+| Storage (Collections) | IndexedDB — raw `indexedDB` API, no third-party wrapper |
+| AI Integration | ASI Cloud inference API (`https://inference.asicloud.cudos.org/v1/chat/completions`) |
+| External Libraries | **None** — zero dependencies, no npm, no frameworks |
+| Fonts | System font stack + `JetBrains Mono / Fira Code` (monospace, system-loaded) |
+
+---
+
+## Project Structure
 
 ```
 cURL_Lite/
+├── index.html              # Playground page (main app)
+├── landing.html            # Landing / marketing page
+├── collections.html        # Collections manager page
 │
-├── index.html          # Semantic HTML5 page layout & structure
 ├── css/
-│   └── style.css       # Visual layout, design system, theme variables & animations
-└── js/
-    ├── app.js          # Core controller connecting UI events, API calls, and storage
-    ├── api.js          # Asynchronous HTTP handler (Fetch, AbortController, Timeout)
-    ├── storage.js      # LocalStorage persistence wrapper (Save, Load, Clear)
-    └── ui.js           # DOM manipulation, render logic, and lifecycle visualizer
-```
-
-#### Module Breakdown:
-* `index.html`: Defines the layout structure (Header, Request Configuration Panel, Promise Lifecycle Bar, Response Panel, Request History Sidebar).
-* `css/style.css`: Contains CSS Grid/Flexbox styling, custom dark/light theme properties, glassmorphism UI cards, animations for loading/promise transitions, and responsive mobile layouts.
-* `js/app.js`: Main entry point initializing event handlers and managing application state flow.
-* `js/api.js`: Handles network calls with `fetch()`, configures headers/body options, attaches `AbortController` signals, and measures execution timing.
-* `js/storage.js`: Wraps `localStorage` read/write operations with `JSON.stringify()` and `JSON.parse()`.
-* `js/ui.js`: Encapsulates all DOM modifications (e.g., updating lifecycle state classes, syntax formatting, history item rendering).
-
----
-
-##  Visual & UI Design
-
-### 1. Interface Layout (ASCII Mockup)
-
-```
-┌───────────────────────────────────────────────────────────┐
-│                        cURL Lite                          │
-│              Visual HTTP Request Playground               │
-├───────────────────────────────────────────────────────────┤
-│ Method       URL                                          │
-│ [ GET ▼ ]    [ https://dummyjson.com/products/1        ]  │
-│                                                           │
-│ Headers                                                   │
-│ Key: [ Content-Type  ]  Value: [ application/json    ] [-] │
-│ Key: [ Authorization ]  Value: [ Bearer token123...  ] [-] │
-│ [ + Add Header ]                                          │
-│                                                           │
-│ Request Body (JSON)                                       │
-│ ┌───────────────────────────────────────────────────────┐ │
-│ │ { "title": "New Product", "price": 29.99 }            │ │
-│ └───────────────────────────────────────────────────────┘ │
-│                                                           │
-│ Timeout: [ 5000 ms ▼ ]                                    │
-│ [  Send Request ]             [ ⏹ Abort Request ]        │
-├───────────────────────────────────────────────────────────┤
-│ Request Lifecycle Visualizer                               │
-│ [ PENDING ] ➔ [ FULFILLED ] (Latency: 245ms)             │
-├───────────────────────────────────────────────────────────┤
-│ Response Panel                                            │
-│ Status: 200 OK  | Time: 245 ms | Size: 1.2 KB             │
-│ Headers: Content-Type: application/json; charset=utf-8    │
-│ Body:                                                     │
-│ {                                                         │
-│   "id": 1,                                                │
-│   "title": "Essence Mascara Lash Princess",               │
-│   "price": 9.99                                           │
-│ }                                                         │
-├───────────────────────────────────────────────────────────┤
-│ Request History                                           │
-│  GET  https://dummyjson.com/products/1      (11:42 AM)  │
-│  POST https://dummyjson.com/products        (11:40 AM)  │
-│ [  Clear History ]                                      │
-└───────────────────────────────────────────────────────────┘
-```
-
-### 2. Design System & Aesthetics
-* **Theme**: Modern Dark Mode with a high-contrast layout, sleek cards, and glassmorphism accents.
-* **HTTP Method Color Palette**:
-  * `GET`: Bright Emerald Green (`#10B981`)
-  * `POST`: Royal Sapphire Blue (`#3B82F6`)
-  * `PUT`: Amber Gold (`#F59E0B`)
-  * `DELETE`: Crimson Red (`#EF4444`)
-* **Promise Visualizer Indicators**:
-  * `PENDING`: Pulsing Yellow / Amber Glow
-  * `FULFILLED`: Glowing Emerald Green Border & Badge
-  * `REJECTED`: Neon Crimson Red Glow & Error Icon
-* **Typography**: Clean modern sans-serif (`Inter`, `Roboto`, or system default font stack) for UI, paired with monospace (`Fira Code`, `JetBrains Mono`) for code/headers/body formatting.
-
----
-
-##  Request Lifecycle & Control Flow
-
-### 1. Standard Request Flow
-```
-User clicks [Send Request]
-       │
-       ▼
-Collect Form Data (Method, URL, Headers, Body)
-       │
-       ▼
-Update Lifecycle UI ──> Set Status to [ PENDING ]
-       │
-       ▼
-Execute fetch(url, options) with AbortController Signal
-       │
-  ┌────┴────────────────────────┐
-  ▼                             ▼
-[ Response Received ]      [ Network Failure / Abort ]
-  │                             │
-  ▼                             ▼
-Check response.ok           Set Status to [ REJECTED ]
-  │                             │
-  ├─► True: Parse JSON ────────► Set Status to [ FULFILLED ]
-  │
-  └─► False: Parse Error ──────► Render HTTP Error Code
-       │
-       ▼
-Render Status, Headers, Body & Save to History (LocalStorage)
+│   ├── style.css           # App stylesheet (Playground + Collections)
+│   └── landing.css         # Landing page stylesheet (isolated)
+│
+├── js/
+│   ├── api.js              # Fetch execution, AbortController, AI request helpers
+│   ├── app.js              # Form logic, event wiring, draft/cookie/AI setup
+│   ├── ui.js               # DOM rendering (history, response, lifecycle, headers editor)
+│   ├── storage.js          # localStorage, sessionStorage, and Cookie utilities
+│   ├── db.js               # Full IndexedDB CRUD layer (openDB, save, get, update, delete)
+│   ├── collections.js      # Collections page logic (render, modal, AI assistant)
+│   └── landing.js          # Hero title cycling animation
+│
+├── README.md
+├── .gitignore
+└── RequestLab_Beginner_Build_Guide.docx
 ```
 
 ---
 
-##  Step-by-Step Implementation Roadmap
+## Pages Overview
 
-| Phase | Task Description | Key Concepts Demonstrated |
-| :--- | :--- | :--- |
-| **Phase 1** | Build HTML Skeleton | Forms, Semantic Structure, Inputs, Select, Textarea |
-| **Phase 2** | Visual Layout & CSS | Flexbox, CSS Grid, Glassmorphism, Theme Variables |
-| **Phase 3** | DOM Event Listeners | `querySelector`, `addEventListener`, Event Delegation |
-| **Phase 4** | Request Form Reader | Data Extraction, JavaScript Objects, Form Validation |
-| **Phase 5** | Core GET Implementation | Native `fetch()`, `async/await`, Promises |
-| **Phase 6** | Error Handling Layer | `try...catch`, `response.ok`, Error Boundaries |
-| **Phase 7** | Status Code Display | HTTP Status Mapping, Dynamic CSS Styling |
-| **Phase 8** | JSON Formatting & Beautification | `JSON.parse()`, `JSON.stringify(data, null, 2)` |
-| **Phase 9** | POST Request Support | Request Payload, `Content-Type: application/json` |
-| **Phase 10**| Dynamic Headers Editor | Dynamic DOM Creation, Array Manipulation |
-| **Phase 11**| PUT & DELETE Support | Generalized `sendRequest()` Handler Abstraction |
-| **Phase 12**| Loading States & Feedback | UI Spinner, Button Disabling, Async Feedback |
-| **Phase 13**| Promise Lifecycle Visualizer | State Machine UI Updates, CSS Status Animations |
-| **Phase 14**| AbortController Integration | `AbortController`, Signal Cancellation |
-| **Phase 15**| Automated Request Timeout | `AbortSignal.timeout()`, Latency Handling |
-| **Phase 16**| Request History Array | Data Structuring, History Queueing |
-| **Phase 17**| LocalStorage Persistence | `localStorage.setItem()`, `localStorage.getItem()` |
-| **Phase 18**| Restore Request State | State Hydration on Click, Form Repopulation |
-| **Phase 19**| UI Polish & Micro-animations | Responsive Breakpoints, Transitions, Accessibility |
+### `landing.html` — Landing Page
+The entry point / marketing page. Features a dot-grid background with ambient gradient glow blurs, a floating glassmorphism capsule navbar, and a 3D isometric CSS illustration built entirely with CSS transforms. The hero headline cycles through five descriptive taglines using a fade in/out animation loop driven by `landing.js`. A features section below showcases three core capabilities via a responsive `auto-fit` grid. No JavaScript storage interactions occur on this page.
+
+**Scripts:** `landing.js`
 
 ---
 
-##  Common Pitfalls & Guidelines
+### `index.html` — Playground
+The main application page. Layout is a CSS Grid with a **main workspace** column (scrollable) and a fixed-width 340px **history sidebar**. The workspace contains four primary sections stacked vertically:
 
-1. **`response.json()` returns a Promise**: Remember that `fetch()` resolves to a `Response` object; `response.json()` must also be `await`ed.
-2. **HTTP Errors vs Network Errors**: A `404 Not Found` or `500 Server Error` will *not* reject the `fetch()` promise. Always check `response.ok` before attempting standard payload extraction.
-3. **JSON Stringification**: Body payloads sent via `POST` or `PUT` must be stringified with `JSON.stringify()` before sending over HTTP.
-4. **LocalStorage Storage Format**: `localStorage` only stores strings. Always use `JSON.stringify()` when saving and `JSON.parse()` when loading objects/arrays.
-5. **Decoupled Architecture**: Keep API fetch logic (`api.js`), DOM rendering (`ui.js`), and storage logic (`storage.js`) strictly separated from the main orchestrator (`app.js`).
+1. **AI Prompt Bar** — optional natural-language input to generate request configs via ASI Cloud
+2. **Request Builder** — method dropdown, URL input, Send/Abort buttons, timeout control, headers editor, JSON body textarea
+3. **Promise Lifecycle Visualizer** — real-time PENDING / FULFILLED / REJECTED state display with latency
+4. **Response Inspector** — status badge, timing metrics, response headers, formatted JSON body
 
----
+The sidebar lists past requests from `localStorage`; clicking any card repopulates the entire form including headers.
 
-## 🏁 Getting Started
-
-### Prerequisites
-No build tools, bundlers, or frameworks required! You only need a modern web browser (Chrome, Firefox, Safari, Edge).
-
-### Installation & Execution
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/Samanyu3482/cURL_Lite.git
-   ```
-2. Navigate to the project directory:
-   ```bash
-   cd cURL_Lite
-   ```
-3. Open `index.html` in your browser or run a local static server:
-   ```bash
-   npx serve .
-   ```
+**Scripts:** `api.js`, `storage.js`, `ui.js`, `app.js`
 
 ---
 
-*cURL Lite — Built layer by layer for clean, robust visual HTTP testing.*
+### `collections.html` — Collections
+A single-column centered layout (max-width 1100px) for managing named API endpoint suites. Contains:
+
+1. **Collections Header Bar** — title, description, and `+ Create Collection` button
+2. **AI Collection Generator Bar** — prompt input to auto-generate and save a collection via ASI Cloud
+3. **Collections Grid** — responsive `auto-fill` grid of collection cards; each card shows the collection name, endpoint count, and a list of endpoints with method tags and **▶ Run** deep-links to the Playground
+
+Creating a collection opens a modal dialog (form with name + description fields) that writes to IndexedDB on submit. Deleting a collection removes it from IndexedDB and re-renders the grid immediately.
+
+**Scripts:** `api.js`, `storage.js`, `db.js`, `collections.js`
+
+---
+
+## Data Storage
+
+Four separate browser storage mechanisms are used, each serving a distinct purpose:
+
+### 1. `localStorage` — Request History & AI API Key
+
+| Key | Purpose |
+|---|---|
+| `curl-lite-history` | Array of up to 20 past request objects (method, URL, status, duration, timestamp, headers, body) |
+| `curl-lite-ai-key` | User's ASI Cloud API key (persists across sessions) |
+
+Managed in `js/storage.js` via `saveHistory()`, `loadHistory()`, `clearHistoryData()`, `saveAIKey()`, `loadAIKey()`.
+
+### 2. `sessionStorage` — Form Draft
+
+| Key | Purpose |
+|---|---|
+| `curl-lite-draft` | Serialized snapshot of the current form state (method, URL, headers, body, timeout) |
+
+Written on every `input` / `change` event and cleared after a successful request submission. Restored on page load unless URL query params are present. Managed via `saveDraft()`, `loadDraft()`, `clearDraft()` in `js/storage.js`.
+
+### 3. Browser Cookies — User Preferences
+
+| Cookie Name | Purpose | Expiry |
+|---|---|---|
+| `curl_lite_timeout` | Last-used request timeout value (ms) | 30 days |
+
+Written via `setCookie()` / read via `getCookie()` in `js/storage.js`. Uses `SameSite=Lax` and `path=/`.
+
+### 4. IndexedDB — Collections
+
+- **Database:** `cURL_Lite_DB` (version 1)
+- **Object Store:** `collections` (auto-increment integer primary key `id`)
+- **Operations:** `openDB()`, `saveCollectionToDB()`, `getAllCollectionsFromDB()`, `getCollectionById()`, `updateCollection()`, `deleteCollectionFromDB()`
+- All operations are Promise-wrapped over the raw `indexedDB` API — no third-party library used.
+- Managed entirely in `js/db.js`.
+
+---
+
+## Responsive Design
+
+Two breakpoints are defined in `css/style.css`:
+
+### ≤ 1024px (Tablet)
+```css
+@media (max-width: 1024px) { ... }
+```
+- The two-column CSS Grid (`1fr 340px`) collapses to a **single column** (`1fr`)
+- The history sidebar loses its left border and gets a top border instead, capped at `max-height: 350px`
+
+### ≤ 640px (Mobile)
+```css
+@media (max-width: 640px) { ... }
+```
+- Main workspace padding reduced (`24px → 14px`)
+- URL bar wraps to multiple lines (`flex-wrap: wrap`), action buttons fill full width
+- Header rows collapse to a tighter grid (`1fr 1fr 28px`)
+- Promise Lifecycle track switches to **vertical** layout (`flex-direction: column`), arrows rotate 90°
+- AI Prompt Bar stacks vertically; API key input fills full width
+
+The landing page (`css/landing.css`) has a single breakpoint at `≤ 640px` adjusting hero padding and footer layout. Both stylesheets use `clamp()` for fluid typography on the landing page hero title and subtitle.
+
+---
+
+## How to Run Locally
+
+No build tools, bundlers, or package managers are required.
+
+**1. Clone the repository:**
+```bash
+git clone https://github.com/Samanyu3482/cURL_Lite.git
+cd cURL_Lite
+```
+
+**2. Serve locally** (IndexedDB requires a proper HTTP origin — `file://` will not work):
+
+Option A — VS Code Live Server:
+Install the [Live Server extension](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer), right-click `landing.html`, and select **Open with Live Server**.
+
+Option B — Python:
+```bash
+python3 -m http.server 8080
+# Open http://localhost:8080/landing.html
+```
+
+Option C — Node.js:
+```bash
+npx serve .
+# Follow the URL printed in the terminal
+```
+
+**3. Navigate the app:**
+- Start at `landing.html`
+- Click **Launch Playground** → `index.html`
+- Click **Collections** in the nav → `collections.html`
+
+**4. (Optional) Enable AI features:**
+Enter your [ASI Cloud](https://inference.asicloud.cudos.org) API key in the AI Prompt Bar on the Playground or Collections page. The key is saved to `localStorage` automatically.
+
+---
+
+## Future Improvements
+
+1. **Response syntax highlighting** — Integrate a lightweight syntax highlighter (e.g., Prism.js) to color-code JSON keys, strings, and numbers in the response body panel.
+2. **Export / Import Collections** — Allow users to export collections as a JSON file and re-import them, enabling sharing between browsers without a backend.
+3. **Environment Variables** — Add a key-value store for named variables (e.g., `{{BASE_URL}}`, `{{TOKEN}}`) that auto-substitute into URL and header fields before sending.
+
+---
+
+## Author / Credits
+
+**Project:** cURL Lite — Visual HTTP Request Playground  
+**Repository:** [github.com/Samanyu3482/cURL_Lite](https://github.com/Samanyu3482/cURL_Lite)
+
+Built as part of the **SIGMA Web Dev SIG Major Projects** programme.
+
+- AI inference powered by [ASI Cloud (Cudos)](https://inference.asicloud.cudos.org) using the `asi1-mini` model
+- No third-party UI frameworks or component libraries were used
+- All storage, networking, and rendering logic is implemented with native browser APIs
