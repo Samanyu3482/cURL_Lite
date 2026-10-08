@@ -6,6 +6,7 @@
 ![No Build Tools](https://img.shields.io/badge/No%20Build%20Tools-Required-brightgreen?style=flat)
 ![Browser Native](https://img.shields.io/badge/Browser-Native-blue?style=flat)
 
+###  [Live Demo (Netlify)](https://curllite-dev.netlify.app) | [Watch Project Video]()
 ---
 
 ## Project Specs
