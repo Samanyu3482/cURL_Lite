@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cURL Lite — Visual HTTP Request Playground</title>
+    <meta name="description"
+        content="A lightweight, browser-native visual HTTP request playground with Promise lifecycle visualization, headers editor, and request history.">
+    <meta property="og:title" content="cURL Lite — Visual HTTP Request Playground">
+    <meta property="og:description"
+        content="A lightweight, browser-native visual HTTP request playground with Promise lifecycle visualization, headers editor, and request history.">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <header class="app-header">
+        <nav class="capsule-nav">
+            <a href="index.html" class="brand-capsule">
+                <div class="brand-icon-box" aria-hidden="true">⇄</div>
+                <span class="brand-name">cURL Lite</span>
+                <span class="brand-cross">×</span>
+                <span class="brand-tag">Playground</span>
+            </a>
+            <ul class="capsule-nav-links">
+                <li><a href="index.html" class="capsule-nav-link">Home</a></li>
+                <li><a href="index.html" class="capsule-nav-link active">Playground</a></li>
+                <li><a href="collections.html" class="capsule-nav-link">Collections</a></li>
+            </ul>
+            <div class="nav-actions-right">
+                <a href="index.html" class="nav-link-btn">← Back to Home</a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="app-layout">
+
+        <main class="main-workspace">
+
+
+            <form id="request-form" class="request-builder-card" autocomplete="off">
+
+                <!-- AI Natural Language Request Builder -->
+                <div class="ai-prompt-bar">
+                    <div class="ai-input-cluster">
+                        <input type="password" id="ai-key-input" class="ai-key-input" placeholder="ASI API Key"
+                            title="ASI API Key (saved locally)">
+                        <input type="text" id="ai-prompt-input" class="ai-prompt-input"
+                            placeholder="✨ Type prompt (e.g. Fetch 5 products under $500 from dummyjson)...">
+                    </div>
+                    <button type="button" id="btn-ai-generate" class="btn btn-ai"
+                        title="Generate HTTP Request using AI">
+                        ✨ Generate
+                    </button>
+                </div>
+
+                <!-- Primary Address Bar: Method Dropdown + URL Input + Send/Abort -->
+                <div class="url-bar-container">
+                    <!-- HTTP Method Selector -->
+                    <div class="method-select-wrapper">
+                        <label for="method-select" class="visually-hidden" style="display:none;">HTTP Method</label>
+                        <select id="method-select" name="method" class="method-select">
+                            <option value="GET" selected>GET</option>
+                            <option value="POST">POST</option>
+                            <option value="PUT">PUT</option>
+                            <option value="DELETE">DELETE</option>
+                        </select>
+                    </div>
+
+                    <!-- Target URL Input -->
+                    <label for="url-input" class="visually-hidden" style="display:none;">Request URL</label>
+                    <input type="url" id="url-input" name="url" class="url-input"
+                        placeholder="https://dummyjson.com/products/1" value="https://dummyjson.com/products/1"
+                        required>
+
+                    <!-- Action Buttons -->
+                    <div class="request-actions">
+                        <button type="submit" id="btn-send" class="btn btn-send" title="Send HTTP Request">
+                            <span aria-hidden="true">▶</span> Send
+                        </button>
+                        <button type="button" id="btn-abort" class="btn btn-abort" title="Abort Active Request">
+                            <span aria-hidden="true">⏹</span> Abort
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Secondary Controls: Request Timeout -->
+                <div class="controls-subrow">
+                    <div class="timeout-control">
+                        <label for="timeout-input">Timeout (AbortSignal):</label>
+                        <input type="number" id="timeout-input" name="timeout" class="timeout-input" value="5000"
+                            min="10" step="10">
+                        <span>ms</span>
+                    </div>
+                </div>
+
+
+                <section class="params-section" aria-label="Request Configuration">
+                    <div class="section-title-bar">
+                        <span class="section-heading">Request Configuration</span>
+                    </div>
+
+                    <div class="params-content">
+
+                        <!-- Dynamic Headers Editor -->
+                        <div class="param-block" id="headers-editor">
+                            <div class="param-block-header">
+                                <span class="param-block-label">HTTP Request Headers</span>
+                            </div>
+
+                            <!-- Headers Key-Value Rows Container -->
+                            <div id="headers-list" class="headers-list">
+                                <!-- Example Row 1: Content-Type -->
+                                <div class="header-row">
+                                    <input type="text" class="header-input header-key"
+                                        placeholder="Key (e.g. Content-Type)" value="Content-Type">
+                                    <input type="text" class="header-input header-val"
+                                        placeholder="Value (e.g. application/json)" value="application/json">
+                                    <button type="button" class="btn-remove-header" title="Remove header row"
+                                        aria-label="Remove header">✕</button>
+                                </div>
+                                <!-- Example Row 2: Accept -->
+                                <div class="header-row">
+                                    <input type="text" class="header-input header-key"
+                                        placeholder="Key (e.g. Authorization)" value="Accept">
+                                    <input type="text" class="header-input header-val"
+                                        placeholder="Value (e.g. Bearer token)" value="application/json">
+                                    <button type="button" class="btn-remove-header" title="Remove header row"
+                                        aria-label="Remove header">✕</button>
+                                </div>
+                            </div>
+
+                            <!-- Add Header Button -->
+                            <button type="button" id="btn-add-header" class="btn-add-header">
+                                + Add Header
+                            </button>
+                        </div>
+
+                        <!-- Request Body Editor (JSON) -->
+                        <div class="param-block" id="body-editor">
+                            <div class="param-block-header">
+                                <label for="body-input" class="param-block-label">Request Body (JSON for POST /
+                                    PUT)</label>
+                            </div>
+                            <div class="body-editor-wrapper">
+                                <textarea id="body-input" name="body" class="body-editor-textarea"
+                                    placeholder='{&#10;  "title": "New Product",&#10;  "price": 29.99&#10;}'
+                                    spellcheck="false">{
+  "title": "New Product",
+  "price": 29.99
+}</textarea>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+            </form>
+
+
+            <section class="lifecycle-card" id="lifecycle-section" aria-label="Promise Lifecycle Visualizer">
+                <div class="lifecycle-header">
+                    <div class="lifecycle-title">
+                        <span aria-hidden="true">⚡</span> Promise Lifecycle Visualizer
+                    </div>
+                    <div id="lifecycle-latency" class="lifecycle-meta">
+                        Latency: <strong>245 ms</strong>
+                    </div>
+                </div>
+
+                <!-- Visual Pipeline: PENDING ➔ FULFILLED (or REJECTED) -->
+                <div class="lifecycle-track">
+                    <!-- State 1: PENDING -->
+                    <div class="stage-item" id="stage-pending" title="Request initiated, awaiting server response">
+                        <span class="stage-indicator"></span>
+                        <span>PENDING</span>
+                    </div>
+
+                    <div class="stage-arrow active" aria-hidden="true">➔</div>
+
+                    <!-- State 2: FULFILLED (Currently highlighted as demonstration) -->
+                    <div class="stage-item" id="stage-fulfilled" title="Promise resolved, response received and parsed">
+                        <span class="stage-indicator"></span>
+                        <span>FULFILLED</span>
+                    </div>
+
+                    <div class="stage-arrow" aria-hidden="true">/</div>
+
+                    <!-- State 3: REJECTED (Alternative error/abort branch) -->
+                    <div class="stage-item" id="stage-rejected"
+                        title="Promise rejected due to network drop, timeout, or abort">
+                        <span class="stage-indicator"></span>
+                        <span>REJECTED</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="response-card" id="response-section" aria-label="Response Inspector">
+                <!-- Status & Latency Metrics Top Bar -->
+                <div class="response-metrics-bar">
+                    <div class="metric-item">
+                        <span class="metric-label">Status:</span>
+                        <span id="response-status" class="response-status-badge">200 OK</span>
+                    </div>
+                    <div class="response-stats-cluster">
+                        <div class="metric-item">
+                            <span class="metric-label">Time:</span>
+                            <span id="response-time" class="metric-value">245 ms</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">Size:</span>
+                            <span id="response-size" class="metric-value">1.24 KB</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="response-content-wrapper">
+                    <!-- Response Headers Preview -->
+                    <div class="param-block">
+                        <span class="param-block-label">Response Headers</span>
+                        <div class="response-headers-box" id="response-headers">
+                            <div class="response-header-line">
+                                <span class="response-header-name">content-type:</span>
+                                <span class="response-header-val">application/json; charset=utf-8</span>
+                            </div>
+                            <div class="response-header-line">
+                                <span class="response-header-name">cache-control:</span>
+                                <span class="response-header-val">public, max-age=120</span>
+                            </div>
+                            <div class="response-header-line">
+                                <span class="response-header-name">date:</span>
+                                <span class="response-header-val">Wed, 30 Sep 2026 12:20:00 GMT</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Formatted Response Body (JSON) -->
+                    <div class="param-block">
+                        <span class="param-block-label">Response Body (JSON)</span>
+                        <pre class="response-body-pre"><code id="response-body">{
+  "id": 1,
+  "title": "Essence Mascara Lash Princess",
+  "description": "The Essence Mascara Lash Princess is a popular mascara known for its volumizing effect.",
+  "category": "beauty",
+  "price": 9.99,
+  "discountPercentage": 7.17,
+  "rating": 4.94,
+  "stock": 99,
+  "brand": "Essence"
+}</code></pre>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+
+        <aside class="history-sidebar" id="history-sidebar" aria-label="Request History">
+            <!-- Sidebar Header -->
+            <div class="history-header">
+                <div class="history-title-group">
+                    <h2 class="history-title">History</h2>
+                    <span id="history-count" class="history-badge">3</span>
+                </div>
+                <button type="button" id="btn-clear-history" class="btn-clear-history"
+                    title="Clear all local request history">
+                    Clear History
+                </button>
+            </div>
+
+            <!-- History List Items -->
+            <div id="history-list" class="history-list">
+
+                <!-- History Item 1 -->
+                <article class="history-card" tabindex="0" title="Click to restore into form">
+                    <div class="history-card-top">
+                        <span class="method-tag get">GET</span>
+                        <time class="history-time" datetime="11:42">11:42 AM</time>
+                    </div>
+                    <div class="history-url">https://dummyjson.com/products/1</div>
+                    <div class="history-card-bottom">
+                        <span>Status: 200 OK</span>
+                        <span>245 ms</span>
+                    </div>
+                </article>
+
+                <!-- History Item 2 -->
+                <article class="history-card" tabindex="0" title="Click to restore into form">
+                    <div class="history-card-top">
+                        <span class="method-tag post">POST</span>
+                        <time class="history-time" datetime="11:40">11:40 AM</time>
+                    </div>
+                    <div class="history-url">https://dummyjson.com/products/add</div>
+                    <div class="history-card-bottom">
+                        <span>Status: 201 Created</span>
+                        <span>380 ms</span>
+                    </div>
+                </article>
+
+                <!-- History Item 3 -->
+                <article class="history-card" tabindex="0" title="Click to restore into form">
+                    <div class="history-card-top">
+                        <span class="method-tag delete">DELETE</span>
+                        <time class="history-time" datetime="11:35">11:35 AM</time>
+                    </div>
+                    <div class="history-url">https://dummyjson.com/products/1</div>
+                    <div class="history-card-bottom">
+                        <span>Status: 200 OK</span>
+                        <span>190 ms</span>
+                    </div>
+                </article>
+
+            </div>
+        </aside>
+
+    </div>
+    <script src="js/api.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>
