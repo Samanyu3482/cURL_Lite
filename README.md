@@ -6,8 +6,24 @@
 ![No Build Tools](https://img.shields.io/badge/No%20Build%20Tools-Required-brightgreen?style=flat)
 ![Browser Native](https://img.shields.io/badge/Browser-Native-blue?style=flat)
 
-###  [Live Demo (Netlify)](https://curllite-dev.netlify.app) | [Watch Project Video]()
+<div align="center">
+  <br>
+  <a href="https://curllite-dev.netlify.app">
+    <img src="https://img.shields.io/badge/Live_Demo-Netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white" alt="Live Demo (Netlify)" />
+  </a>
+  &nbsp;&nbsp;
+  <a href="https://samanyu3482.github.io/cURL_Lite/">
+    <img src="https://img.shields.io/badge/Live_Demo-GitHub_Pages-181717?style=for-the-badge&logo=github&logoColor=white" alt="Live Demo (GitHub Pages)" />
+  </a>
+  &nbsp;&nbsp;
+  <a href="#">
+    <img src="https://img.shields.io/badge/Watch-Project_Video-FF0000?style=for-the-badge&logo=youtube&logoColor=white" alt="Watch Project Video" />
+  </a>
+  <br><br>
+</div>
+
 ---
+
 
 ## Project Specs
 
