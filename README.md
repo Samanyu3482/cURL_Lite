@@ -70,6 +70,17 @@ cURL Lite is a lightweight, browser-native HTTP API testing tool built entirely 
 
 cURL Lite removes friction from browser-based API testing. The Playground page provides a Postman-like interface — method selector, URL bar, headers editor, body textarea, timeout control — that uses the native browser Fetch API to fire real HTTP requests. Every request is logged to `localStorage`; clicking any history entry restores the full configuration back into the form. A dedicated Collections page stores named groups of API endpoints in IndexedDB, and both pages integrate an optional AI bar that talks to the ASI Cloud inference API to auto-generate requests or whole endpoint suites from natural-language prompts.
 
+```mermaid
+graph LR
+    L[Landing Page] -->|Launch| P[Playground]
+    L -->|Navigate| C[Collections]
+    
+    P --> API[Native Fetch API]
+    API --> Ext[External APIs]
+    
+    C -->|▶ Run Endpoint| P
+```
+
 ---
 
 ## Features
@@ -91,6 +102,16 @@ cURL Lite removes friction from browser-based API testing. The Playground page p
 - Three-state pipeline indicator: **PENDING** (amber pulse animation) → **FULFILLED** (green) / **REJECTED** (red)
 - Updates in real time as the async `fetch()` call progresses
 - Latency displayed in the visualizer header after each request
+
+```mermaid
+stateDiagram-v2
+    [*] --> PENDING : User clicks Send
+    PENDING --> FULFILLED : Network returns 2xx/3xx/4xx/5xx
+    PENDING --> REJECTED : Network error / Aborted
+    
+    FULFILLED --> [*] : Render JSON & Headers
+    REJECTED --> [*] : Render Error Message
+```
 
 ### Response Inspector
 - HTTP status code + status text badge (green for 2xx, red for errors/abort)
@@ -125,6 +146,20 @@ cURL Lite removes friction from browser-based API testing. The Playground page p
 - Powered by **ASI Cloud inference API** (`asi1-mini` model, OpenAI-compatible `/v1/chat/completions`)
 - API key stored in `localStorage` (`curl-lite-ai-key`), persists across sessions
 - Animated glowing purple UI state during generation (`ai-generating` CSS class with `@keyframes`)
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant App as cURL Lite
+    participant ASI as ASI Cloud LLM
+    
+    User->>App: Enter prompt & click "✨ Generate"
+    App->>App: Show "Generating..." state
+    App->>ASI: POST /v1/chat/completions
+    ASI-->>App: Returns raw JSON string
+    App->>App: Parse JSON & populate UI form
+    App->>User: Ready to send HTTP request!
+```
 
 ---
 
@@ -212,6 +247,20 @@ Creating a collection opens a modal dialog (form with name + description fields)
 ## Data Storage
 
 Four separate browser storage mechanisms are used, each serving a distinct purpose:
+
+```mermaid
+graph TD
+    UI[cURL Lite UI] -->|Saves Draft| SS[(sessionStorage)]
+    UI -->|Saves Preferences| C[(Cookies)]
+    UI -->|Saves History & AI Key| LS[(localStorage)]
+    UI -->|Saves Collections| IDB[(IndexedDB)]
+    
+    style UI fill:#2563eb,stroke:#fff,color:#fff
+    style SS fill:#f8fafc,stroke:#94a3b8
+    style C fill:#f8fafc,stroke:#94a3b8
+    style LS fill:#f8fafc,stroke:#94a3b8
+    style IDB fill:#f8fafc,stroke:#94a3b8
+```
 
 ### 1. `localStorage` — Request History & AI API Key
 
