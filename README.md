@@ -8,7 +8,7 @@
 
 ---
 
-## Screenshots
+## Project Specs
 
 <table>
   <tr>
@@ -60,7 +60,7 @@ cURL Lite is a lightweight, browser-native HTTP API testing tool built entirely 
 - AI-assisted collection suite generation
 - Deep-link support — Playground loads pre-filled via URL query params (`?url=&method=`)
 
-**Pages:** Landing (`landing.html`), Playground (`index.html`), Collections (`collections.html`)
+**Pages:** Landing (`index.html`), Playground (`playground.html`), Collections (`collections.html`)
 
 **Design Approach:** Clean, minimal light theme using a curated color palette defined via CSS Custom Properties. System font stack with monospace (`JetBrains Mono / Fira Code`) for code surfaces. Glassmorphism navbar (`backdrop-filter: blur`). Animated hero with cycling headline text. CSS Grid two-column layout on desktop, single-column on tablet/mobile.
 
@@ -149,8 +149,8 @@ cURL Lite removes friction from browser-based API testing. The Playground page p
 
 ```
 cURL_Lite/
-├── index.html              # Playground page (main app)
-├── landing.html            # Landing / marketing page
+├── index.html              # Landing / marketing page
+├── playground.html         # Playground page (main app)
 ├── collections.html        # Collections manager page
 │
 ├── css/
@@ -175,14 +175,14 @@ cURL_Lite/
 
 ## Pages Overview
 
-### `landing.html` — Landing Page
+### `index.html` — Landing Page
 The entry point / marketing page. Features a dot-grid background with ambient gradient glow blurs, a floating glassmorphism capsule navbar, and a 3D isometric CSS illustration built entirely with CSS transforms. The hero headline cycles through five descriptive taglines using a fade in/out animation loop driven by `landing.js`. A features section below showcases three core capabilities via a responsive `auto-fit` grid. No JavaScript storage interactions occur on this page.
 
 **Scripts:** `landing.js`
 
 ---
 
-### `index.html` — Playground
+### `playground.html` — Playground
 The main application page. Layout is a CSS Grid with a **main workspace** column (scrollable) and a fixed-width 340px **history sidebar**. The workspace contains four primary sections stacked vertically:
 
 1. **AI Prompt Bar** — optional natural-language input to generate request configs via ASI Cloud
@@ -286,12 +286,12 @@ cd cURL_Lite
 **2. Serve locally** (IndexedDB requires a proper HTTP origin — `file://` will not work):
 
 Option A — VS Code Live Server:
-Install the [Live Server extension](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer), right-click `landing.html`, and select **Open with Live Server**.
+Install the [Live Server extension](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer), right-click `index.html`, and select **Open with Live Server**.
 
 Option B — Python:
 ```bash
 python3 -m http.server 8080
-# Open http://localhost:8080/landing.html
+# Open http://localhost:8080/index.html
 ```
 
 Option C — Node.js:
@@ -301,8 +301,8 @@ npx serve .
 ```
 
 **3. Navigate the app:**
-- Start at `landing.html`
-- Click **Launch Playground** → `index.html`
+- Start at `index.html`
+- Click **Launch Playground** → `playground.html`
 - Click **Collections** in the nav → `collections.html`
 
 **4. (Optional) Enable AI features:**
