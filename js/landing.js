@@ -15,17 +15,17 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentLineIndex = 0;
 
   async function showLine(text) {
-    // Set text and fade in
+  
     titleElement.textContent = text;
     titleElement.classList.remove("line-hidden");
     titleElement.classList.add("line-visible");
-    await new Promise((resolve) => setTimeout(resolve, 2800)); // Stay visible 2.8s
+    await new Promise((resolve) => setTimeout(resolve, 2800)); 
   }
 
   async function hideLine() {
     titleElement.classList.remove("line-visible");
     titleElement.classList.add("line-hidden");
-    await new Promise((resolve) => setTimeout(resolve, 500)); // Match CSS fade-out duration
+    await new Promise((resolve) => setTimeout(resolve, 500)); 
   }
 
   async function cycleLines() {
@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Start hidden, then begin cycle
+ 
   titleElement.classList.add("line-hidden");
   cycleLines();
 });

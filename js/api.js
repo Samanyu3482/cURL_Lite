@@ -123,7 +123,6 @@ async function sendRequest(config) {
         const timeoutId = setTimeout(() => {
             if(currentController) {
                 currentController.abort();
-                
             }
         }, timeoutMs);
 
@@ -147,7 +146,6 @@ async function sendRequest(config) {
                 data : data,
                 duration : duration,
                 headers : headerObj
-                
                 
             }
             

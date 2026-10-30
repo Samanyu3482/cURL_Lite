@@ -84,7 +84,7 @@ function getRequestHeaders() {
 }
 
 async function handleSubmit(event) {
-    event.preventDefault(); // to prevent page reload
+    event.preventDefault(); 
     console.log("Form submitted");
     const formMethod = document.getElementById("method-select").value;
     const formUrl = document.getElementById("url-input").value;
